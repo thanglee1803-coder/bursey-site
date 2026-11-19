@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bursey: Don't quit before the first yes</title>
+<meta name="description" content="Bursey is an iPhone app that counts every try. One tap after every call, email or DM: Not reached, No or Win. See your effort add up, and get a card worth posting.">
+<meta name="theme-color" content="#08070C">
+<meta name="robots" content="noindex">
+<meta name="waitlist-mailto" content="anhjuniorle@gmail.com">
+<link rel="preload" href="fonts/DMSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="ambient" aria-hidden="true"><i class="ambient__violet"></i><i class="ambient__orange"></i></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6B21E8"/><stop offset=".5" stop-color="#C74D9E"/><stop offset="1" stop-color="#F2993D"/>
+    </linearGradient>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M2.6 14.2c5.2-5.3 13.6-5.3 18.8 0 .5.5.5 1.200 0 1.700l-1.500 1.500c-.4.4-1 .5-1.500.2l-2.700-1.500c-.4-.2-.7-.7-.7-1.200v-1.700a9.800 9.800 0 0 0-6 0v1.700c0 .5-.3 1-.7 1.200l-2.700 1.500c-.5.3-1.100.2-1.500-.2l-1.500-1.500c-.5-.5-.5-1.200 0-1.700z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.200l2.900 6.300 6.900.8-5.100 4.700 1.400 6.800L12 17.400 5.900 20.800l1.400-6.800L2.200 9.300l6.900-.8z"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path fill="url(#brand)" d="M12.500 2c.8 3.800 5 5.400 5 10.600A5.500 5.500 0 0 1 6.500 12.600c0-2 .9-3.200 1.600-4.700.9 1 1.700 1.400 2.300 1.300C10.600 6.700 11.300 4.400 12.500 2z"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path fill="currentColor" d="M4 9.500h3.200L12 5.500v13l-4.800-4H4z"/><path class="waves" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" d="M15.500 9a4.200 4.200 0 0 1 0 6M18 6.500a7.700 7.700 0 0 1 0 11"/><path class="slash" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" d="M15.500 9.500l5 5M20.500 9.500l-5 5"/></symbol>
+    <symbol id="i-foot" viewBox="0 0 20 40"><path fill="currentColor" d="M10 0c4.400 0 7 4.600 7 10.500 0 4.700-1.600 9.500-3 13.500H6.500C5 20 3 15.500 3 10.500 3 4.600 5.600 0 10 0zM6.800 27h7c.6 2 .9 4 .9 6 0 4-1.700 7-4.400 7s-4.400-3-4.400-7c0-2 .3-4 .9-6z"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a class="wordmark" href="#top" aria-label="Bursey, back to top"></a>
+    <div class="nav__right">
+      <button class="iconbtn" id="soundBtn" type="button" aria-pressed="true" aria-label="Sound on">
+        <svg width="22" height="22" aria-hidden="true"><use href="#i-sound"/></svg>
+      </button>
+      <a class="btn btn--brand btn--sm" href="#waitlist">Join the waitlist</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- 1. HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow" data-glide>iPhone app · App Store · 11 Jan 2027</p>
+      <h1 data-glide>Don't quit before the <span class="grad">first yes.</span></h1>
+      <p class="lede" data-glide>Made a call? One tap: Not reached, No or Win. Bursey counts every try, so you can see your effort add up.</p>
+      <form class="join join--inline" data-glide data-waitlist novalidate>
+        <label class="sr" for="heroEmail">Your email</label>
+        <input id="heroEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn btn--brand" type="submit">Join the waitlist</button>
+        <p class="join__msg" role="status" aria-live="polite"></p>
+      </form>
+      <p class="fine" data-glide>Free to start. No spam: one email when Bursey is ready.</p>
+    </div>
+
+    <div class="stage" data-glide>
+      <p class="stage__hint" id="stageHint"><span class="dot"></span><span>Try it. Tap a button<span class="keys"> or press 1, 2, 3</span>.</span></p>
+
+      <div class="phone" id="phone">
+        <div class="phone__island" aria-hidden="true"></div>
+        <div class="phone__screen">
+          <p class="p-date" id="pDate">Today</p>
+
+          <div class="p-hero">
+            <div>
+              <p class="p-day">Day <b class="grad">1</b></p>
+              <p class="lbl">of my business</p>
+              <p class="p-streak"><svg width="18" height="18" aria-hidden="true"><use href="#i-flame"/></svg><span id="pStreak">No streak yet</span></p>
+            </div>
+            <div class="ring" role="img" aria-label="Goal: 10 tries today">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/>
+                <circle id="ringArc" cx="50" cy="50" r="42" fill="none" stroke="url(#brand)" stroke-width="7" stroke-linecap="round" stroke-dasharray="263.9" stroke-dashoffset="263.9" transform="rotate(-90 50 50)"/>
+              </svg>
+              <div class="ring__num"><b id="pCount">0</b><span>of 10 today</span></div>
+            </div>
+          </div>
+
+          <div class="p-tiles">
+            <div class="tile tile--violet"><b id="tAttempts">0</b><span>Attempts</span></div>
+            <div class="tile tile--magenta"><b id="tTalks">0</b><span>Conversations</span></div>
+            <div class="tile tile--gold"><b id="tWins">0</b><span>Wins</span></div>
+            <div class="tile tile--rose"><b id="tLosses">0</b><span>Losses</span></div>
+          </div>
+
+          <div class="p-btns">
+            <button type="button" class="try try--nr" data-try="notReached"><svg width="22" height="22" aria-hidden="true"><use href="#i-phone"/></svg><span>Not reached</span></button>
+            <button type="button" class="try try--no" data-try="loss"><svg width="22" height="22" aria-hidden="true"><use href="#i-x"/></svg><span>No</span></button>
+            <button type="button" class="try try--win" data-try="win"><svg width="22" height="22" aria-hidden="true"><use href="#i-star"/></svg><span>Win</span></button>
+          </div>
+          <button type="button" class="p-undo" id="undoBtn" disabled>Undo last try</button>
+        </div>
+      </div>
+
+      <figure class="stage__card">
+        <div class="share share--feed" id="heroCard">
+          <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
+          <div class="share__body">
+            <p class="share__day">Day <b>1</b></p>
+            <p class="share__wins"><b id="cWins">0</b> <span id="cWinsLbl">wins</span></p>
+          </div>
+          <p class="share__tag">Don't quit before the first yes.</p>
+        </div>
+        <figcaption id="cardCap">Your card. Tap Win and watch it change.</figcaption>
+      </figure>
+      <p class="sr" id="live" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 2. THE NO'S -->
+<section class="nos" id="nos" aria-labelledby="nosH">
+  <div class="nos__pin">
+    <div class="wrap nos__in">
+      <div class="nos__side">
+        <p class="eyebrow">Before the first yes</p>
+        <h2 id="nosH" class="sr">The no's before the first yes</h2>
+        <p class="nos__count"><span>Try</span> <b id="nosNum">1</b></p>
+      </div>
+      <ol class="nos__list" id="nosList">
+        <li>Not reached.</li><li>No.</li><li>Not reached.</li><li>No.</li><li>No.</li>
+        <li>Not reached.</li><li>No.</li><li>Not reached.</li><li>No.</li><li>No.</li>
+        <li>No.</li><li>Not reached.</li><li>No.</li><li>No.</li><li class="is-win">Win.</li>
+      </ol>
+      <p class="nos__end" id="nosEnd">Most people stop somewhere in here.<br>Bursey shows you how far you have already come.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. THREE BUTTONS -->
+<section class="sec three" aria-labelledby="threeH">
+  <div class="wrap">
+    <h2 id="threeH" class="h2" data-glide>Three buttons.<br><span class="dim">That's the whole habit.</span></h2>
+    <div class="three__grid">
+      <article class="big big--nr" data-glide>
+        <svg width="40" height="40" aria-hidden="true"><use href="#i-phone"/></svg>
+        <h3>Not reached</h3>
+        <p>Nobody picked up. It still counts, because you tried.</p>
+      </article>
+      <article class="big big--no" data-glide>
+        <svg width="40" height="40" aria-hidden="true"><use href="#i-x"/></svg>
+        <h3>No</h3>
+        <p>You talked and they said no. You showed up, and it's on the board.</p>
+      </article>
+      <article class="big big--win" data-glide>
+        <svg width="40" height="40" aria-hidden="true"><use href="#i-star"/></svg>
+        <h3>Win</h3>
+        <p>They said yes to a next step: a meeting, a demo, an offer.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 4. THE CARD -->
+<section class="cardsec" id="card" aria-labelledby="cardH">
+  <div class="cardsec__pin">
+    <div class="wrap cardsec__in">
+      <div class="cardsec__copy">
+        <p class="eyebrow">The share card</p>
+        <h2 id="cardH" class="h2">No wins this week?<br><span class="grad">Post your effort instead.</span></h2>
+        <ul class="facts" id="facts">
+          <li class="is-on"><b>Never money. Never names.</b><span>Your card can't show them, on any plan.</span></li>
+          <li><b>Your day and your wins.</b><span>The free card never shows your number of tries.</span></li>
+          <li><b>Posting is never required.</b><span>Bursey works as a private scoreboard too.</span></li>
+        </ul>
+      </div>
+      <div class="flipwrap">
+        <div class="flip" id="flip">
+          <div class="flip__face flip__face--front">
+            <div class="share share--feed">
+              <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
+              <div class="share__body"><p class="share__day">Day <b>12</b></p><p class="share__wins"><b>2</b> wins</p></div>
+              <p class="share__tag">Don't quit before the first yes.</p>
+            </div>
+          </div>
+          <div class="flip__face flip__face--back">
+            <div class="share share--story">
+              <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
+              <div class="share__body"><p class="share__day">Day <b>12</b></p><p class="share__wins"><b>2</b> wins</p></div>
+              <p class="share__tag">Don't quit before the first yes.</p>
+            </div>
+          </div>
+        </div>
+        <p class="flip__lbl"><span id="flipLbl">Feed · 4:5</span><span class="flip__ex">Example card</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. STREAK -->
+<section class="streak" id="streak" aria-labelledby="streakH">
+  <div class="streak__pin">
+    <div class="wrap streak__in">
+      <div class="streak__copy">
+        <p class="eyebrow">The streak</p>
+        <h2 id="streakH" class="h2">A streak that forgives.</h2>
+        <p class="body">Bursey counts work days in a row with at least one try. Weekends never break it. Going on holiday? Mark it as a Day off and your streak survives.</p>
+        <p class="streak__num"><svg width="34" height="34" aria-hidden="true"><use href="#i-flame"/></svg><b id="streakNum">0</b><span>day streak</span></p>
+      </div>
+      <div class="map card" aria-hidden="true">
+        <div class="map__rows"><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span><span>Sun</span></div>
+        <div class="map__grid" id="mapGrid"></div>
+        <p class="map__legend"><span>Less</span><i class="lv1"></i><i class="lv2"></i><i class="lv3"></i><span>More</span><i class="dotwin"></i><span>win</span><em>–</em><span>day off</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. THE REST -->
+<section class="sec rest" aria-labelledby="restH">
+  <div class="wrap">
+    <h2 id="restH" class="h2" data-glide>When you want more<br><span class="dim">than a number.</span></h2>
+    <div class="rest__grid">
+      <article class="card note" data-glide id="note">
+        <header><h3>Your notebook</h3><span class="tag">Example page</span></header>
+        <dl>
+          <dt>Goal</dt><dd data-type="10 tries before lunch."></dd>
+          <dt>What happened</dt><dd data-type="Six not reached. Three no's. One demo booked."></dd>
+          <dt>Lesson</dt><dd data-type="Calling before 10 works better than after lunch."></dd>
+          <dt>What I'll change tomorrow</dt><dd data-type="Start at 9."></dd>
+        </dl>
+        <p class="fine">One page a day. Writing it is optional: the buttons are enough.</p>
+      </article>
+      <article class="card money" data-glide>
+        <header><h3>Money, kept private</h3><span class="tag">Example numbers</span></header>
+        <div class="money__row money__row--earned">
+          <span class="lbl">Money earned</span>
+          <b data-euro="590">0,00 €</b>
+        </div>
+        <div class="money__row money__row--invested">
+          <span class="lbl">Money invested</span>
+          <b data-euro="111">0,00 €</b>
+        </div>
+        <p class="fine">Two totals for your eyes only. Money never appears on a card.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 7. FREE AND PAID -->
+<section class="sec plans" aria-labelledby="plansH">
+  <div class="wrap">
+    <h2 id="plansH" class="h2" data-glide>Free to start.<br><span class="dim">Small to keep.</span></h2>
+    <div class="plans__grid">
+      <article class="card plan" data-glide>
+        <h3>Bursey Free</h3>
+        <p class="plan__price"><b>0 €</b><span>forever</span></p>
+        <ul>
+          <li>The three buttons</li>
+          <li>Today's score</li>
+          <li>A share card with your day and your wins</li>
+        </ul>
+      </article>
+      <article class="card plan plan--paid" data-glide>
+        <h3>Bursey</h3>
+        <p class="plan__price"><b>7 €</b><span>a year, first 14 days free</span></p>
+        <p class="plan__or">or <b>19 €</b> once, for life</p>
+        <ul>
+          <li>Everything in Free</li>
+          <li>Your streak of work days</li>
+          <li>Your daily notebook</li>
+          <li>Money earned and invested</li>
+          <li>Choose what your card shows</li>
+          <li>Export your data (CSV)</li>
+        </ul>
+      </article>
+    </div>
+    <p class="founding" data-glide><b>Founding members:</b> lifetime for 14 € until 31 Jan 2027 or for the first 100 buyers, whichever comes first. After that it's 19 €.</p>
+    <p class="fine center" data-glide>Prices in euros. On iPhone, in the App Store, from 11 Jan 2027.</p>
+  </div>
+</section>
+
+<!-- 8. FOUNDER -->
+<section class="sec founder" aria-labelledby="founderH">
+  <div class="wrap founder__grid">
+    <div class="founder__card" data-glide>
+      <div class="share share--feed" id="founderCard">
+        <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
+        <div class="share__body">
+          <p class="share__day">Day <b data-dayn>1</b></p>
+          <p class="share__wins" id="founderWins" hidden><b></b> <span>wins</span></p>
+        </div>
+        <p class="share__tag">Don't quit before the first yes.</p>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow" data-glide>Who makes it</p>
+      <h2 id="founderH" class="h2" data-glide>Built by Anh, a founder on <span class="grad">Day <span data-dayn>1</span>.</span></h2>
+      <p class="body" data-glide>I started cold-calling for my own business on 9 Nov 2026. I built Bursey to keep myself going through the no's, and I have used it every day since.</p>
+      <p class="body" data-glide>The number on this card goes up by one every day. It's my real one.</p>
+      <p data-glide><a class="link" id="seriesLink" href="#" hidden>Watch “How many no's?”, my street interviews</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- 9. PRIVATE -->
+<section class="sec private" aria-labelledby="privH">
+  <div class="wrap">
+    <h2 id="privH" class="h2" data-glide>Your numbers stay yours.</h2>
+    <ol class="rows">
+      <li data-glide><b>On your device.</b><span>Bursey keeps your data on your iPhone.</span></li>
+      <li data-glide><b>No account. No tracking.</b><span>Nothing to sign up for inside the app, nobody watching.</span></li>
+      <li data-glide><b>Take it with you.</b><span>With the paid plan, export everything as a CSV file any time.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 10. QUESTIONS -->
+<section class="sec faq" aria-labelledby="faqH">
+  <div class="wrap faq__in">
+    <h2 id="faqH" class="h2" data-glide>Fair questions.</h2>
+    <div class="faq__list">
+      <details data-glide><summary>Do I have to post my card?</summary><p>No. Posting is never required. Bursey works as a private scoreboard too.</p></details>
+      <details data-glide><summary>I already track this in a spreadsheet.</summary><p>Then keep it. Bursey isn't a CRM and doesn't store your contacts. It is one tap per try, a streak and a card. And with the paid plan your data exports as a CSV file.</p></details>
+      <details data-glide><summary>It's a one-person app. Will it exist next year?</summary><p>I can't promise the future. What I can say: your data lives on your device, the paid plan can export it, and I use Bursey myself every day.</p></details>
+      <details data-glide><summary>Does counting tries get me clients?</summary><p>No app can promise that. Bursey shows you how much you really did, and helps you keep doing it on the days nothing lands.</p></details>
+      <details data-glide><summary>What about Mac and Windows?</summary><p>iPhone comes first. Mac and Windows are planned as a download from this site, with no date yet. Tick the box below so I know you want it.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 11. WAITLIST -->
+<section class="waitlist" id="waitlist" aria-labelledby="waitH">
+  <div class="steps" aria-hidden="true" id="steps"></div>
+  <div class="wrap waitlist__in">
+    <h2 id="waitH" class="h1" data-glide>Be there on <span class="grad">Day 1.</span></h2>
+    <p class="lede center" data-glide>Leave your email. I'll write once, when Bursey is in the App Store.</p>
+    <form class="join join--full card" data-glide data-waitlist novalidate>
+      <div class="field">
+        <label for="wlEmail">Your email <span aria-hidden="true">*</span></label>
+        <input id="wlEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required aria-describedby="wlErr">
+        <p class="field__err" id="wlErr" role="alert"></p>
+      </div>
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <fieldset>
+        <legend>Optional</legend>
+        <label class="check"><input type="checkbox" name="beta"><span>I post my progress online and want to test the beta (December)</span></label>
+        <label class="check"><input type="checkbox" name="mac"><span>I want Bursey on Mac</span></label>
+        <label class="check"><input type="checkbox" name="windows"><span>I want Bursey on Windows</span></label>
+      </fieldset>
+      <button class="btn btn--brand btn--lg" type="submit">Join the waitlist</button>
+      <p class="join__msg" role="status" aria-live="polite"></p>
+      <p class="fine">By joining you agree to get email about the Bursey launch (and the beta, if you ticked it). You can unsubscribe any time. <a class="link" href="datenschutz.html">Privacy</a></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <span class="ringmark ringmark--lg" aria-hidden="true"></span>
+    <p>Bursey. Built by Anh in Bremen.</p>
+    <nav aria-label="Legal"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
+  </div>
+</footer>
+
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
