@@ -259,7 +259,7 @@
           else {
             var r = rnd();
             c.classList.add(r > 0.82 ? 'lv3' : r > 0.4 ? 'lv2' : 'lv1');
-            if (rnd() > 0.72) c.innerHTML = '<i></i>';
+            if (rnd() > 0.72) c.innerHTML = '<svg class="cell__win" viewBox="0 0 24 24"><use href="#i-sparkles"/></svg>';
             info.counts = true;
           }
         } else if (w === 4 && d === 5) { c.classList.add('lv1'); info.counts = true; } // a weekend try adds a day
