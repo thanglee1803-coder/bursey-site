@@ -142,6 +142,11 @@ b, .num { font-variant-numeric: tabular-nums; }
 .hero__grid { display: grid; gap: 56px; grid-template-columns: 1fr; }
 .hero__copy > * + * { margin-top: 24px; }
 .hero__copy .fine { margin-top: 14px; }
+.launch { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; }
+.launch__pill { display: inline-flex; align-items: center; gap: 9px; padding: 7px 14px 7px 11px; border-radius: 99px; background: var(--ink); color: #fff; font-family: var(--display); font-weight: 700; font-size: 14px; letter-spacing: -.01em; }
+.launch__pill b { color: var(--lime); font-weight: 800; }
+.launch__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 0 rgba(184, 255, 77, .7); animation: launchPulse 2s ease-out infinite; }
+@keyframes launchPulse { 70%, 100% { box-shadow: 0 0 0 8px rgba(184, 255, 77, 0); } }
 
 .join--inline { display: flex; flex-wrap: wrap; gap: 10px; max-width: 520px; }
 .join--inline input[type="email"] { flex: 1 1 220px; }

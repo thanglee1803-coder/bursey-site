@@ -222,6 +222,23 @@
   $('#pDate').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
   paintPhone();
 
+  /* ---------------------------------------------------------------- Launch countdown: real days until 11 Jan 2027 */
+  (function launchCountdown() {
+    var node = $('#launchText');
+    if (!node) return;
+    function paint() {
+      var now = new Date();
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var days = Math.round((new Date(2027, 0, 11) - today) / 864e5);
+      if (days > 1) node.innerHTML = 'Launches in <b>' + days + '</b> days';
+      else if (days === 1) node.innerHTML = 'Launches <b>tomorrow</b>';
+      else if (days === 0) node.innerHTML = 'Out <b>today</b> on the App Store';
+      else node.innerHTML = 'Out now on the App Store';
+    }
+    paint();
+    setInterval(paint, 60 * 60 * 1000);
+  })();
+
   /* ---------------------------------------------------------------- Founder: Day N, counted live */
   function paintFounder(cfg) {
     var p = String(cfg.dayOne || '2026-11-09').split('-').map(Number);
