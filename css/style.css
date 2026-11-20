@@ -507,6 +507,9 @@ b, .num { font-variant-numeric: tabular-nums; }
 .legal h2 { font-size: 24px; letter-spacing: -.02em; margin: 40px 0 10px; }
 .legal p, .legal li { color: var(--ink-2); margin-top: 10px; }
 .legal ul { list-style: disc; padding-left: 22px; }
+.legal__intro { font-size: 19px; }
+.legal__date { margin-top: 48px; }
+.legal b { color: var(--ink); }
 .todo { display: inline-block; background: var(--lime); color: var(--ink); font-weight: 700; padding: 1px 8px; border-radius: 6px; }
 
 /* ---------- Larger screens */
