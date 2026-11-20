@@ -14,7 +14,7 @@
   /* ---------------------------------------------------------------- Sound */
   var soundOn = store.get('bursey-sound') !== 'off';
   var sounds = {};
-  ['win', 'loss', 'notReached', 'streak'].forEach(function (name) {
+  ['win', 'loss', 'notReached', 'streak', 'undo'].forEach(function (name) {
     var a = new Audio('sounds/' + name + '.m4a');
     a.preload = 'none';
     sounds[name] = a;
@@ -33,61 +33,93 @@
   });
   paintSound();
 
-  /* ---------------------------------------------------------------- Confetti (same physics as Celebration.swift) */
+  /* ---------------------------------------------------------------- Sparkle burst (same as PhoneCelebration.swift) */
   var canvas = $('#confetti');
   var ctx = canvas.getContext('2d');
-  var palette = ['#6B21E8', '#F2993D', '#F5A524', '#D45DB0', '#FFD60A', '#FFFFFF'];
+  var SPARKLES = new Path2D('M3 12C6.314 12 9 9.314 9 6C9 9.314 11.686 12 15 12C11.686 12 9 14.686 9 18C9 14.686 6.314 12 3 12Z M16 6C17.105 6 18 5.105 18 4C18 5.105 18.895 6 20 6C18.895 6 18 6.895 18 8C18 6.895 17.105 6 16 6Z M16 18C17.105 18 18 17.105 18 16C18 17.105 18.895 18 20 18C18.895 18 18 18.895 18 20C18 18.895 17.105 18 16 18Z');
+  var ONE = new Path2D('M3 12C7.970 12 12 7.970 12 3C12 7.970 16.030 12 21 12C16.030 12 12 16.030 12 21C12 16.030 7.970 12 3 12Z');
+  var FILLS = ['#B8FF4D', null, '#FFFFFF', '#A4F1CD', '#D9FF8F'];
   var burst = null;
   function sizeCanvas() {
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = window.innerWidth * dpr; canvas.height = window.innerHeight * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-  function confetti(originEl) {
-    if (reduced) return;
+  function seeded(seed) {
+    var s = seed >>> 0 || 1;
+    return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+  }
+  /** Outline sparkles shoot out of `originEl`: up and to the sides, spin, then fall and fade. */
+  function sparkleBurst(originEl, big) {
     sizeCanvas();
     var r = originEl.getBoundingClientRect();
-    var pieces = [];
-    for (var i = 0; i < 110; i++) {
+    var rnd = seeded(Date.now() & 0xffff);
+    var calm = reduced, count = calm ? 8 : big ? 36 : 20, pieces = [];
+    for (var i = 0; i < count; i++) {
+      var cluster = rnd() < 0.55;
       pieces.push({
-        x0: r.left + r.width * (0.1 + 0.8 * Math.random()),
-        vx: (Math.random() - 0.5) * 520,
-        vy: -(380 + Math.random() * 520),
-        rot: Math.random() * 360, spin: (Math.random() - 0.5) * 900,
-        w: 6 + Math.random() * 6, c: palette[i % palette.length]
+        cluster: cluster, size: cluster ? 28 + 14 * rnd() : 15 + 8 * rnd(),
+        spin0: (rnd() - 0.5) * 80, spin: (rnd() - 0.5) * 520,
+        angle: -Math.PI * (0.05 + 0.9 * rnd()), speed: (230 + 270 * rnd()) * (big ? 1.3 : 1),
+        life: (big ? 1.5 : 1.2) + 0.5 * rnd(), spread: rnd() - 0.5,
+        wave: big && i % 2 === 1 ? 0.18 : 0, fill: FILLS[i % FILLS.length], i: i
       });
     }
     var wasRunning = !!burst;
-    burst = { t0: performance.now(), y0: r.top + r.height * 0.6, pieces: pieces };
-    if (!wasRunning) requestAnimationFrame(drawConfetti);
+    burst = { t0: performance.now(), x: r.left + r.width / 2, y: r.top + r.height / 2, pieces: pieces, calm: calm, count: count,
+              dur: calm ? 1.0 : big ? 2.2 : 1.7 };
+    if (!wasRunning) requestAnimationFrame(drawBurst);
   }
-  function drawConfetti(now) {
+  function drawBurst(now) {
     if (!burst) return;
-    var dur = 2.4, t = (now - burst.t0) / 1000;
+    var t = (now - burst.t0) / 1000;
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    if (t >= dur) { burst = null; return; }
-    ctx.globalAlpha = Math.max(0, 1 - Math.pow(t / dur, 3));
+    if (t >= burst.dur) { burst = null; return; }
     burst.pieces.forEach(function (p) {
+      var x, y, scale, opacity, rot;
+      if (burst.calm) {
+        var local = t - p.i * 0.05, span = 0.6;
+        if (local < 0 || local >= span) return;
+        var u = local / span, a = p.i / burst.count * 2 * Math.PI + p.spread, rr = 60 + p.speed / 6;
+        x = burst.x + Math.cos(a) * rr * 1.3; y = burst.y + Math.sin(a) * rr * 0.6;
+        scale = u < 0.4 ? u / 0.4 : 1 - (u - 0.4) / 0.6; opacity = 1; rot = p.spin0 + u * 45;
+      } else {
+        var l = t - p.wave;
+        if (l < 0 || l >= p.life) return;
+        x = burst.x + p.spread * 90 + Math.cos(p.angle) * p.speed * l;
+        y = burst.y + Math.sin(p.angle) * p.speed * l + 260 * l * l;
+        scale = Math.min(1, l * 6) * (1 - 0.3 * l / p.life);
+        opacity = 1 - Math.max(0, (l - p.life * 0.6) / (p.life * 0.4));
+        rot = p.spin0 + p.spin * l;
+      }
+      if (scale <= 0.02 || opacity <= 0) return;
+      var k = p.size / 24 * scale;
       ctx.save();
-      ctx.translate(p.x0 + p.vx * t, burst.y0 + p.vy * t + 0.5 * 1100 * t * t);
-      ctx.rotate((p.rot + p.spin * t) * Math.PI / 180);
-      ctx.fillStyle = p.c;
-      ctx.fillRect(-p.w / 2, -3, p.w, 6);
+      ctx.globalAlpha = opacity;
+      ctx.translate(x, y); ctx.rotate(rot * Math.PI / 180); ctx.scale(k, k); ctx.translate(-12, -12);
+      var path = p.cluster ? SPARKLES : ONE;
+      if (p.fill) { ctx.fillStyle = p.fill; ctx.fill(path); }
+      ctx.strokeStyle = '#0B241A'; ctx.lineWidth = p.fill ? 1.6 : 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.stroke(path);
       ctx.restore();
     });
-    requestAnimationFrame(drawConfetti);
+    requestAnimationFrame(drawBurst);
   }
 
-  /* ---------------------------------------------------------------- The live phone and its card */
-  var tries = [];
-  var GOAL = 10, RING = 263.9;
+  /* ---------------------------------------------------------------- The live phone: the app's Today screen */
+  var tries = [];            // { kind, min } — minutes after midnight
+  var GOAL = 10, START = 8 * 60, END = 18 * 60;
   var el = {
-    count: $('#pCount'), arc: $('#ringArc'), streak: $('#pStreak'),
-    attempts: $('#tAttempts'), talks: $('#tTalks'), wins: $('#tWins'), losses: $('#tLosses'),
-    cWins: $('#cWins'), cWinsLbl: $('#cWinsLbl'), cap: $('#cardCap'), undo: $('#undoBtn'),
-    live: $('#live'), hint: $('#stageHint'), phone: $('#phone'), card: $('#heroCard')
+    count: $('#pCount'), talks: $('#tTalks'), wins: $('#tWins'), losses: $('#tLosses'),
+    streakN: $('#pStreakN'), streakWord: $('#pStreakWord'), best: $('#pStreakBest'), flame: $('#pFlame'),
+    tl: $('#timeline'), dots: $('#tlDots'), done: $('#tlDone'), nowLine: $('#tlNow'), clock: $('#tlClock'),
+    toast: $('#toast'), toastText: $('#toastText'), undo: $('#undoBtn'),
+    cWins: $('#cWins'), cWinsLbl: $('#cWinsLbl'), cap: $('#cardCap'),
+    live: $('#live'), hint: $('#stageHint'), phone: $('#phone'), card: $('#heroCard'), win: $('.try--win')
   };
-  var names = { notReached: 'Not reached', loss: 'No', win: 'Win' };
+  var names = { notReached: 'Not reached', loss: 'Talked – no', win: 'Win' };
+  var icons = { notReached: ['i-phone', 13], loss: ['i-x', 9], win: ['i-sparkles', 16] };
+  var toastTimer = 0;
 
   function pop(node) {
     if (reduced || !hasGsap) return;
@@ -96,31 +128,69 @@
   function setNum(node, value) {
     if (node.textContent !== String(value)) { node.textContent = value; pop(node); }
   }
+  function nowMin() { return tries.length ? Math.min(END, tries[tries.length - 1].min + 8) : START + 60; }
+  function frac(min) { return (min - START) / (END - START); }
+  function paintTimeline() {
+    var w = el.tl.clientWidth, f = frac(nowMin());
+    el.done.style.setProperty('--now', f.toFixed(4));
+    el.nowLine.style.setProperty('--nowx', (f * w).toFixed(1) + 'px');
+    el.clock.style.setProperty('--x', (f * w).toFixed(1) + 'px');
+    $$('#tlHours span[data-f]').forEach(function (s) {
+      var hf = Number(s.dataset.f);
+      s.style.setProperty('--x', (hf * w).toFixed(1) + 'px');
+      s.classList.toggle('is-hidden', Math.abs(hf - f) < 0.12);
+    });
+    $$('.dot-try', el.dots).forEach(function (d) { d.style.setProperty('--x', (Number(d.dataset.f) * w).toFixed(1) + 'px'); });
+  }
+  function addDot(t) {
+    var d = document.createElement('span');
+    d.className = 'dot-try dot-try--' + (t.kind === 'notReached' ? 'nr' : t.kind === 'loss' ? 'no' : 'win');
+    d.dataset.f = frac(t.min).toFixed(4);
+    d.innerHTML = '<i></i><svg width="' + icons[t.kind][1] + '" height="' + icons[t.kind][1] + '"><use href="#' + icons[t.kind][0] + '"/></svg>';
+    el.dots.appendChild(d);
+  }
   function paintPhone() {
     var total = tries.length;
-    var wins = tries.filter(function (t) { return t === 'win'; }).length;
-    var losses = tries.filter(function (t) { return t === 'loss'; }).length;
+    var wins = tries.filter(function (t) { return t.kind === 'win'; }).length;
+    var losses = tries.filter(function (t) { return t.kind === 'loss'; }).length;
     setNum(el.count, total);
-    setNum(el.attempts, total);
     setNum(el.talks, wins + losses);
     setNum(el.wins, wins);
     setNum(el.losses, losses);
-    el.arc.style.strokeDashoffset = String(RING * (1 - Math.min(total / GOAL, 1)));
-    el.streak.textContent = total > 0 ? '1-day streak' : 'No streak yet';
+    setNum(el.streakN, total ? 1 : 0);
+    el.best.textContent = total ? 'Best: 1 day' : 'Make one try to start it';
+    el.flame.classList.toggle('is-out', !total);
     setNum(el.cWins, wins);
     el.cWinsLbl.textContent = wins === 1 ? 'win' : 'wins';
     el.cap.textContent = wins > 0 ? 'A card you could post. No tries, no money, no names.' : 'Your card. Tap Win and watch it change.';
-    el.undo.disabled = total === 0;
+    paintTimeline();
+  }
+  function showToast(text) {
+    el.toastText.textContent = text;
+    el.toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.toast.hidden = true; }, 4000);
   }
   function addTry(kind, button) {
     var first = tries.length === 0;
-    tries.push(kind);
+    var last = tries.length ? tries[tries.length - 1].min : START + 60;
+    var t = { kind: kind, min: Math.min(END - 10, last + (first ? 10 : 12 + Math.round(Math.random() * 26))) };
+    tries.push(t);
+    addDot(t);
     paintPhone();
     play(kind);
-    if (first) { setTimeout(function () { play('streak'); }, 380); el.hint.hidden = true; }
+    showToast('Counted: ' + names[kind]);
+    if (first) {
+      setTimeout(function () { play('streak'); }, 380);
+      el.hint.classList.add('is-done');
+      el.flame.classList.add('is-boost'); setTimeout(function () { el.flame.classList.remove('is-boost'); }, 700);
+    }
     if (kind === 'win') {
-      confetti(el.phone);
-      if (!reduced && hasGsap) gsap.fromTo(el.card, { scale: 1.06 }, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)', overwrite: true });
+      sparkleBurst(el.win, tries.length === GOAL);
+      el.win.classList.add('is-fill'); setTimeout(function () { el.win.classList.remove('is-fill'); }, 650);
+      if (!reduced && hasGsap) gsap.fromTo(el.card, { scale: 1.05 }, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)', overwrite: true });
+    } else if (tries.length === GOAL) {
+      sparkleBurst(el.win, true);
     }
     el.live.textContent = names[kind] + ' counted. ' + tries.length + (tries.length === 1 ? ' try' : ' tries') + ' today.';
     if (button) { button.classList.add('is-press'); setTimeout(function () { button.classList.remove('is-press'); }, 120); }
@@ -130,9 +200,15 @@
   });
   el.undo.addEventListener('click', function () {
     if (!tries.length) return;
-    tries.pop(); paintPhone();
+    tries.pop();
+    var dots = $$('.dot-try', el.dots);
+    if (dots.length) dots[dots.length - 1].remove();
+    paintPhone();
+    el.toast.hidden = true;
+    play('undo');
     el.live.textContent = 'Last try removed. ' + tries.length + ' today.';
   });
+  window.addEventListener('resize', paintTimeline, { passive: true });
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var t = e.target;
@@ -143,7 +219,8 @@
     if (r.bottom < 80 || r.top > window.innerHeight - 80) return; // only while the phone is on screen
     addTry(map[e.key], $('[data-try="' + map[e.key] + '"]'));
   });
-  $('#pDate').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
+  $('#pDate').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  paintPhone();
 
   /* ---------------------------------------------------------------- Founder: Day N, counted live */
   function paintFounder(cfg) {
@@ -190,7 +267,7 @@
       }
     }
   })();
-  var streakNum = $('#streakNum');
+  var streakNum = $('#streakNum'), mapFlame = $('.streak__num .flame');
   function paintMap(progress) {
     var upto = Math.round(progress * cells.length), n = 0;
     for (var i = 0; i < cells.length; i++) {
@@ -199,23 +276,32 @@
       if (on && cells[i].counts) n++;
     }
     streakNum.textContent = n;
+    if (mapFlame) mapFlame.classList.toggle('is-out', n === 0);
   }
   paintMap(1);
 
-  /* ---------------------------------------------------------------- Footprints behind the waitlist */
+  /* ---------------------------------------------------------------- The try line behind the waitlist */
   var steps = $('#steps'), feet = [];
   (function buildSteps() {
-    var count = 14;
+    var count = 12;
+    // Along the bottom, then up the right edge to the face in the top-right corner (it never crosses the text)
+    function at(t) {
+      if (t < 0.6) { var s = t / 0.6; return { x: 3 + s * 82, y: 93 - Math.sin(s * Math.PI) * 2 }; }
+      var u = (t - 0.6) / 0.4;
+      return { x: 85 + 8 * Math.sin(u * Math.PI / 2), y: 93 - 77 * (1 - Math.cos(u * Math.PI / 2)) };
+    }
+    var d = '';
+    for (var k = 0; k <= 60; k++) { var q = at(k / 60); d += (k ? 'L' : 'M') + q.x.toFixed(2) + ' ' + q.y.toFixed(2); }
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    line.setAttribute('class', 'steps__line'); line.setAttribute('viewBox', '0 0 100 100'); line.setAttribute('preserveAspectRatio', 'none');
+    line.innerHTML = '<path d="' + d + '"/>';
+    steps.appendChild(line); feet.push(line);
     for (var i = 0; i < count; i++) {
-      var t = i / (count - 1);
-      var left = i % 2 === 0;
-      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('viewBox', '0 0 20 40');
-      svg.innerHTML = '<use href="#i-foot"/>';
-      var x = 6 + t * 86, y = 88 - t * 74 + Math.sin(t * 6) * 5;
-      svg.style.left = x + '%'; svg.style.top = y + '%';
-      svg.style.transform = 'translate(' + (left ? -12 : 12) + 'px,' + (left ? -8 : 8) + 'px) rotate(' + (50 + (left ? -8 : 8)) + 'deg)';
-      steps.appendChild(svg); feet.push(svg);
+      var p = at(i / (count - 1));
+      var dot = document.createElement('i');
+      dot.className = 'step' + (i === count - 1 ? ' step--face' : i % 2 ? ' step--no' : '');
+      dot.style.left = p.x + '%'; dot.style.top = p.y + '%';
+      steps.appendChild(dot); feet.push(dot);
     }
   })();
 
@@ -301,7 +387,7 @@
 
       // 2. The no's
       var list = $('#nosList'), items = $$('li', list), num = $('#nosNum'), end = $('#nosEnd');
-      var last = items.length - 1;
+      var last = items.length - 1, nosWon = false;
       function paintNos(p) {
         var f = Math.min(p / 0.86, 1) * last;
         var lh = items[0].offsetHeight;
@@ -311,6 +397,9 @@
           gsap.set(li, { opacity: Math.max(0.05, 1 - d * 0.62), scale: Math.max(0.72, 1 - d * 0.12) });
         });
         num.textContent = Math.round(f) + 1;
+        var atWin = f >= last - 0.05;
+        if (atWin && !nosWon) { nosWon = true; sparkleBurst($('.nos__win'), false); }
+        if (f < last - 0.6) nosWon = false;
         gsap.set(end, { opacity: gsap.utils.clamp(0, 1, (p - 0.86) / 0.1), y: (1 - gsap.utils.clamp(0, 1, (p - 0.86) / 0.1)) * 16 });
       }
       paintNos(0);
@@ -379,7 +468,7 @@
       function done(ok, text) {
         btn.disabled = false; btn.textContent = label;
         msg.className = 'join__msg ' + (ok ? 'is-ok' : 'is-err'); msg.textContent = text;
-        if (ok) { form.reset(); play('win'); confetti(form); }
+        if (ok) { form.reset(); play('win'); sparkleBurst(form.querySelector('button[type="submit"]'), false); }
       }
       // Temporary hosting without a database: hand the sign-up to the visitor's mail app.
       var mailto = document.querySelector('meta[name="waitlist-mailto"]');

@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bursey: Don't quit before the first yes</title>
+<title>Bursey: Every no gets you closer to a yes</title>
 <meta name="description" content="Bursey is an iPhone app that counts every try. One tap after every call, email or DM: Not reached, No or Win. See your effort add up, and get a card worth posting.">
-<meta name="theme-color" content="#08070C">
-<meta name="robots" content="noindex">
-<meta name="waitlist-mailto" content="anhjuniorle@gmail.com">
+<meta name="theme-color" content="#E2FBEF">
+<link rel="icon" type="image/svg+xml" href="img/icon-small-rounded.svg">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/DMSans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Sora.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -19,21 +20,29 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#6B21E8"/><stop offset=".5" stop-color="#C74D9E"/><stop offset="1" stop-color="#F2993D"/>
-    </linearGradient>
     <symbol id="i-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M2.6 14.2c5.2-5.3 13.6-5.3 18.8 0 .5.5.5 1.200 0 1.700l-1.500 1.500c-.4.4-1 .5-1.500.2l-2.700-1.500c-.4-.2-.7-.7-.7-1.200v-1.700a9.800 9.800 0 0 0-6 0v1.700c0 .5-.3 1-.7 1.200l-2.700 1.500c-.5.3-1.100.2-1.500-.2l-1.500-1.500c-.5-.5-.5-1.200 0-1.700z"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.200l2.900 6.300 6.900.8-5.100 4.700 1.400 6.800L12 17.400 5.900 20.800l1.400-6.800L2.200 9.300l6.900-.8z"/></symbol>
-    <symbol id="i-flame" viewBox="0 0 24 24"><path fill="url(#brand)" d="M12.500 2c.8 3.800 5 5.400 5 10.600A5.500 5.500 0 0 1 6.500 12.600c0-2 .9-3.200 1.600-4.700.9 1 1.700 1.400 2.300 1.300C10.600 6.700 11.300 4.400 12.500 2z"/></symbol>
     <symbol id="i-sound" viewBox="0 0 24 24"><path fill="currentColor" d="M4 9.500h3.200L12 5.500v13l-4.800-4H4z"/><path class="waves" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" d="M15.500 9a4.200 4.200 0 0 1 0 6M18 6.500a7.700 7.700 0 0 1 0 11"/><path class="slash" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" d="M15.500 9.500l5 5M20.500 9.500l-5 5"/></symbol>
-    <symbol id="i-foot" viewBox="0 0 20 40"><path fill="currentColor" d="M10 0c4.400 0 7 4.600 7 10.500 0 4.700-1.600 9.500-3 13.500H6.500C5 20 3 15.500 3 10.500 3 4.600 5.600 0 10 0zM6.800 27h7c.6 2 .9 4 .9 6 0 4-1.700 7-4.400 7s-4.400-3-4.400-7c0-2 .3-4 .9-6z"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" d="M3 12C6.314 12 9 9.314 9 6C9 9.314 11.686 12 15 12C11.686 12 9 14.686 9 18C9 14.686 6.314 12 3 12Z M16 6C17.105 6 18 5.105 18 4C18 5.105 18.895 6 20 6C18.895 6 18 6.895 18 8C18 6.895 17.105 6 16 6Z M16 18C17.105 18 18 17.105 18 16C18 17.105 18.895 18 20 18C18.895 18 18 18.895 18 20C18 18.895 17.105 18 16 18Z"/></symbol>
+    <symbol id="i-sparkle1" viewBox="0 0 24 24"><path d="M3 12C7.97 12 12 7.97 12 3C12 7.97 16.03 12 21 12C16.03 12 12 16.03 12 21C12 16.03 7.97 12 3 12Z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path fill="currentColor" d="M3 4.5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8l-3.600 3v-3H3a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"/><path fill="currentColor" d="M18 8.500h3a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-.6v3l-3.600-3H12a2 2 0 0 1-2-2v-.5h4.500A3.500 3.500 0 0 0 18 12.500z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5.5"/></g><circle cx="12" cy="12" r="2" fill="currentColor"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6.500V12l3.500 2"/></g></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.500 7.500 12 3l4.500 4.500"/><path d="M8 10.500H6a1.500 1.500 0 0 0-1.500 1.500v8A1.500 1.500 0 0 0 6 21.500h12a1.500 1.500 0 0 0 1.500-1.500v-8a1.500 1.500 0 0 0-1.500-1.500h-2"/></g></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.500" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 1.500v2.500M12 20v2.500M1.500 12H4M20 12h2.500M4.600 4.600l1.700 1.700M17.700 17.700l1.700 1.700M4.600 19.400l1.700-1.700M17.700 6.300l1.700-1.700"/></g></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path fill="currentColor" d="M6 2h12.500A1.500 1.500 0 0 1 20 3.500V18H6.500a1.500 1.500 0 0 0 0 3H20v1H6.500A3.500 3.500 0 0 1 3 18.500v-13A3.500 3.500 0 0 1 6 2z"/></symbol>
+    <symbol id="i-euro" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" d="M15.800 8.200a4.800 4.800 0 1 0 0 7.600M6.800 10.600h6.400M6.800 13.400h6"/></symbol>
+    <linearGradient id="fire-outer" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF3D1F"/><stop offset=".55" stop-color="#FF8A1F"/><stop offset="1" stop-color="#FFD23F"/></linearGradient>
+    <linearGradient id="fire-core" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFE66B"/><stop offset="1" stop-color="#B8FF4D"/></linearGradient>
+    <path id="flame-outer" fill="url(#fire-outer)" d="M50 4C60 28 86 40 81 69C78 90 63 100 50 100C37 100 21 90 19 70C17 51 33 41 37 24C44 34 46 41 50 45C53 30 51 16 50 4Z"/>
+    <path id="flame-core" fill="url(#fire-core)" d="M50 52C59 63 67 71 65 84C63 94 57 99 50 99C43 99 36 94 35 85C34 74 44 68 50 52Z"/>
   </defs>
 </svg>
 
 <header class="nav" id="nav">
   <div class="wrap nav__in">
-    <a class="wordmark" href="#top" aria-label="Bursey, back to top"></a>
+    <a class="wordmark" href="#top"><img src="img/wordmark.svg" width="108" height="45" alt="Bursey, back to top"></a>
     <div class="nav__right">
       <button class="iconbtn" id="soundBtn" type="button" aria-pressed="true" aria-label="Sound on">
         <svg width="22" height="22" aria-hidden="true"><use href="#i-sound"/></svg>
@@ -50,8 +59,8 @@
   <div class="wrap hero__grid">
     <div class="hero__copy">
       <p class="eyebrow" data-glide>iPhone app · App Store · 11 Jan 2027</p>
-      <h1 data-glide>Don't quit before the <span class="grad">first yes.</span></h1>
-      <p class="lede" data-glide>Made a call? One tap: Not reached, No or Win. Bursey counts every try, so you can see your effort add up.</p>
+      <h1 data-glide>Every no gets you closer to <span class="grad">a yes.</span></h1>
+      <p class="lede" data-glide>Made a call? One tap: Not reached, Talked – no or Win. Bursey counts every try, so you can see your effort add up.</p>
       <form class="join join--inline" data-glide data-waitlist novalidate>
         <label class="sr" for="heroEmail">Your email</label>
         <input id="heroEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
@@ -68,47 +77,79 @@
       <div class="phone" id="phone">
         <div class="phone__island" aria-hidden="true"></div>
         <div class="phone__screen">
-          <p class="p-date" id="pDate">Today</p>
+          <div class="p-toast" id="toast" role="status" aria-live="polite" hidden>
+            <span id="toastText">Counted: Win</span>
+            <button type="button" class="p-toast__undo" id="undoBtn">Undo</button>
+          </div>
+          <div class="p-top">
+            <img class="p-logo" src="img/wordmark.svg" width="78" height="33" alt="Bursey">
+            <span class="p-date" id="pDate">Today</span>
+            <span class="p-share" aria-hidden="true"><svg width="15" height="15"><use href="#i-share"/></svg></span>
+          </div>
 
-          <div class="p-hero">
+          <div class="p-dayline">
+            <p class="p-day">Day <b class="p-day__n">1</b></p>
+            <p class="p-sub">of my business</p>
+          </div>
+
+          <div class="p-card p-streak" id="pStreakCard">
+            <span class="flame is-out" id="pFlame" aria-hidden="true">
+              <i class="flame__glow"></i>
+              <svg class="flame__fire" viewBox="0 0 100 104"><use href="#flame-outer"/><use href="#flame-core"/></svg>
+            </span>
             <div>
-              <p class="p-day">Day <b class="grad">1</b></p>
-              <p class="lbl">of my business</p>
-              <p class="p-streak"><svg width="18" height="18" aria-hidden="true"><use href="#i-flame"/></svg><span id="pStreak">No streak yet</span></p>
-            </div>
-            <div class="ring" role="img" aria-label="Goal: 10 tries today">
-              <svg viewBox="0 0 100 100" aria-hidden="true">
-                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/>
-                <circle id="ringArc" cx="50" cy="50" r="42" fill="none" stroke="url(#brand)" stroke-width="7" stroke-linecap="round" stroke-dasharray="263.9" stroke-dashoffset="263.9" transform="rotate(-90 50 50)"/>
-              </svg>
-              <div class="ring__num"><b id="pCount">0</b><span>of 10 today</span></div>
+              <p class="p-streak__big"><b id="pStreakN">0</b> <span id="pStreakWord">day streak</span></p>
+              <p class="p-streak__best" id="pStreakBest">Make one try to start it</p>
             </div>
           </div>
 
-          <div class="p-tiles">
-            <div class="tile tile--violet"><b id="tAttempts">0</b><span>Attempts</span></div>
-            <div class="tile tile--magenta"><b id="tTalks">0</b><span>Conversations</span></div>
-            <div class="tile tile--gold"><b id="tWins">0</b><span>Wins</span></div>
-            <div class="tile tile--rose"><b id="tLosses">0</b><span>Losses</span></div>
+          <div class="p-card p-today">
+            <div class="p-today__head">
+              <p class="p-today__title">Today</p>
+              <p class="p-goal"><svg width="14" height="14" aria-hidden="true"><use href="#i-target"/></svg><b id="pCount">0</b><span>/10</span></p>
+            </div>
+            <div class="tl" id="timeline" aria-hidden="true">
+              <i class="tl__track"></i><i class="tl__done" id="tlDone"></i>
+              <i class="tl__now" id="tlNow"></i>
+              <div class="tl__dots" id="tlDots"></div>
+            </div>
+            <div class="tl__hours" id="tlHours" aria-hidden="true"><span data-f="0">08</span><span data-f=".3">11</span><span data-f=".6">14</span><span data-f="1">18</span><span id="tlClock"><svg width="11" height="11"><use href="#i-clock"/></svg></span></div>
+            <div class="chips">
+              <span class="chip" title="Conversations"><svg width="15" height="15" aria-hidden="true"><use href="#i-chat"/></svg><b id="tTalks">0</b><span class="sr"> conversations</span></span>
+              <span class="chip chip--win" title="Wins"><svg width="15" height="15" aria-hidden="true"><use href="#i-sparkles"/></svg><b id="tWins">0</b><span class="sr"> wins</span></span>
+              <span class="chip chip--no" title="No's"><svg width="13" height="13" aria-hidden="true"><use href="#i-x"/></svg><b id="tLosses">0</b><span class="sr"> no's</span></span>
+            </div>
           </div>
+
 
           <div class="p-btns">
-            <button type="button" class="try try--nr" data-try="notReached"><svg width="22" height="22" aria-hidden="true"><use href="#i-phone"/></svg><span>Not reached</span></button>
-            <button type="button" class="try try--no" data-try="loss"><svg width="22" height="22" aria-hidden="true"><use href="#i-x"/></svg><span>No</span></button>
-            <button type="button" class="try try--win" data-try="win"><svg width="22" height="22" aria-hidden="true"><use href="#i-star"/></svg><span>Win</span></button>
+            <button type="button" class="try try--nr" data-try="notReached"><svg width="20" height="20" aria-hidden="true"><use href="#i-phone"/></svg><span>Not reached</span></button>
+            <button type="button" class="try try--no" data-try="loss"><svg width="15" height="15" aria-hidden="true"><use href="#i-x"/></svg><span>Talked – no</span></button>
+            <button type="button" class="try try--win" data-try="win">
+              <i class="win__blob win__blob--a" aria-hidden="true"></i><i class="win__blob win__blob--b" aria-hidden="true"></i>
+              <i class="win__edge" aria-hidden="true"></i>
+              <svg width="22" height="22" aria-hidden="true"><use href="#i-sparkles"/></svg><span>Win</span>
+            </button>
           </div>
-          <button type="button" class="p-undo" id="undoBtn" disabled>Undo last try</button>
+
+          <div class="p-tabs" aria-hidden="true">
+            <span class="is-on"><svg width="17" height="17"><use href="#i-sun"/></svg>Today</span>
+            <span><svg width="17" height="17"><use href="#i-book"/></svg>Notebook</span>
+            <span><svg width="17" height="17"><use href="#i-euro"/></svg>Money</span>
+          </div>
         </div>
       </div>
 
       <figure class="stage__card">
         <div class="share share--feed" id="heroCard">
-          <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
+          <img class="share__logo" src="img/wordmark.svg" width="120" height="50" alt="">
           <div class="share__body">
-            <p class="share__day">Day <b>1</b></p>
-            <p class="share__wins"><b id="cWins">0</b> <span id="cWinsLbl">wins</span></p>
+            <p class="share__lbl">Day</p>
+            <p class="share__num"><b>1</b></p>
+            <p class="share__sub">of my business</p>
+            <p class="share__wins"><svg aria-hidden="true"><use href="#i-sparkles"/></svg><b id="cWins">0</b> <span id="cWinsLbl">wins</span></p>
           </div>
-          <p class="share__tag">Don't quit before the first yes.</p>
+          <div class="share__foot"><p class="share__tag">Every no gets you closer to a yes.</p><p class="share__url">bursey.app</p></div>
         </div>
         <figcaption id="cardCap">Your card. Tap Win and watch it change.</figcaption>
       </figure>
@@ -129,7 +170,7 @@
       <ol class="nos__list" id="nosList">
         <li>Not reached.</li><li>No.</li><li>Not reached.</li><li>No.</li><li>No.</li>
         <li>Not reached.</li><li>No.</li><li>Not reached.</li><li>No.</li><li>No.</li>
-        <li>No.</li><li>Not reached.</li><li>No.</li><li>No.</li><li class="is-win">Win.</li>
+        <li>No.</li><li>Not reached.</li><li>No.</li><li>No.</li><li class="is-win"><span class="nos__win">Win.<svg class="nos__spark" aria-hidden="true"><use href="#i-sparkles"/></svg></span></li>
       </ol>
       <p class="nos__end" id="nosEnd">Most people stop somewhere in here.<br>Bursey shows you how far you have already come.</p>
     </div>
@@ -147,12 +188,13 @@
         <p>Nobody picked up. It still counts, because you tried.</p>
       </article>
       <article class="big big--no" data-glide>
-        <svg width="40" height="40" aria-hidden="true"><use href="#i-x"/></svg>
-        <h3>No</h3>
+        <svg width="34" height="34" aria-hidden="true"><use href="#i-x"/></svg>
+        <h3>Talked – no</h3>
         <p>You talked and they said no. You showed up, and it's on the board.</p>
       </article>
       <article class="big big--win" data-glide>
-        <svg width="40" height="40" aria-hidden="true"><use href="#i-star"/></svg>
+        <i class="win__blob win__blob--a" aria-hidden="true"></i><i class="win__blob win__blob--b" aria-hidden="true"></i><i class="win__edge" aria-hidden="true"></i>
+        <svg width="44" height="44" aria-hidden="true"><use href="#i-sparkles"/></svg>
         <h3>Win</h3>
         <p>They said yes to a next step: a meeting, a demo, an offer.</p>
       </article>
@@ -177,16 +219,16 @@
         <div class="flip" id="flip">
           <div class="flip__face flip__face--front">
             <div class="share share--feed">
-              <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
-              <div class="share__body"><p class="share__day">Day <b>12</b></p><p class="share__wins"><b>2</b> wins</p></div>
-              <p class="share__tag">Don't quit before the first yes.</p>
+              <img class="share__logo" src="img/wordmark.svg" width="120" height="50" alt="">
+              <div class="share__body"><p class="share__lbl">Day</p><p class="share__num"><b>12</b></p><p class="share__sub">of my business</p><p class="share__wins"><svg aria-hidden="true"><use href="#i-sparkles"/></svg><b>2</b> wins</p></div>
+              <div class="share__foot"><p class="share__tag">Every no gets you closer to a yes.</p><p class="share__url">bursey.app</p></div>
             </div>
           </div>
           <div class="flip__face flip__face--back">
             <div class="share share--story">
-              <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
-              <div class="share__body"><p class="share__day">Day <b>12</b></p><p class="share__wins"><b>2</b> wins</p></div>
-              <p class="share__tag">Don't quit before the first yes.</p>
+              <img class="share__logo" src="img/wordmark.svg" width="120" height="50" alt="">
+              <div class="share__body"><p class="share__lbl">Day</p><p class="share__num"><b>12</b></p><p class="share__sub">of my business</p><p class="share__wins"><svg aria-hidden="true"><use href="#i-sparkles"/></svg><b>2</b> wins</p></div>
+              <div class="share__foot"><p class="share__tag">Every no gets you closer to a yes.</p><p class="share__url">bursey.app</p></div>
             </div>
           </div>
         </div>
@@ -204,7 +246,7 @@
         <p class="eyebrow">The streak</p>
         <h2 id="streakH" class="h2">A streak that forgives.</h2>
         <p class="body">Bursey counts work days in a row with at least one try. Weekends never break it. Going on holiday? Mark it as a Day off and your streak survives.</p>
-        <p class="streak__num"><svg width="34" height="34" aria-hidden="true"><use href="#i-flame"/></svg><b id="streakNum">0</b><span>day streak</span></p>
+        <p class="streak__num"><span class="flame flame--lg" aria-hidden="true"><i class="flame__glow"></i><svg class="flame__fire" viewBox="0 0 100 104"><use href="#flame-outer"/><use href="#flame-core"/></svg></span><b id="streakNum">0</b><span>day streak</span></p>
       </div>
       <div class="map card" aria-hidden="true">
         <div class="map__rows"><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span><span>Sun</span></div>
@@ -284,12 +326,12 @@
   <div class="wrap founder__grid">
     <div class="founder__card" data-glide>
       <div class="share share--feed" id="founderCard">
-        <div class="share__top"><span class="ringmark" aria-hidden="true"></span><span>bursey.app</span></div>
+        <img class="share__logo" src="img/wordmark.svg" width="120" height="50" alt="">
         <div class="share__body">
-          <p class="share__day">Day <b data-dayn>1</b></p>
-          <p class="share__wins" id="founderWins" hidden><b></b> <span>wins</span></p>
+          <p class="share__lbl">Day</p><p class="share__num"><b data-dayn>1</b></p><p class="share__sub">of my business</p>
+          <p class="share__wins" id="founderWins" hidden><svg aria-hidden="true"><use href="#i-sparkles"/></svg><b></b> <span>wins</span></p>
         </div>
-        <p class="share__tag">Don't quit before the first yes.</p>
+        <div class="share__foot"><p class="share__tag">Every no gets you closer to a yes.</p><p class="share__url">bursey.app</p></div>
       </div>
     </div>
     <div>
@@ -358,7 +400,7 @@
 
 <footer class="foot">
   <div class="wrap foot__in">
-    <span class="ringmark ringmark--lg" aria-hidden="true"></span>
+    <img class="foot__mark" src="img/wordmark.svg" width="132" height="55" alt="">
     <p>Bursey. Built by Anh in Bremen.</p>
     <nav aria-label="Legal"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
   </div>
