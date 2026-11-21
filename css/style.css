@@ -52,7 +52,7 @@
 }
 
 * { box-sizing: border-box; }
-html { background: #E2FBEF; -webkit-text-size-adjust: 100%; }
+html { background: #E2FBEF; -webkit-text-size-adjust: 100%; touch-action: manipulation; } /* no double-tap delay: quick taps on the demo all count; pinch zoom still works */
 body {
   margin: 0; color: var(--ink); background: var(--bg) fixed; background-color: #E2FBEF;
   font: 400 17px/1.55 "DM Sans", system-ui, -apple-system, sans-serif;
