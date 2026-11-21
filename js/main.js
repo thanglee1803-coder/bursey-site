@@ -168,6 +168,9 @@
   function showToast(text) {
     el.toastText.textContent = text;
     el.toast.hidden = false;
+    // On phones the top of the demo is scrolled away while you tap, so show the banner just above the buttons
+    var btns = $('.p-btns');
+    el.toast.style.top = window.innerWidth < 1024 ? (btns.offsetTop - el.toast.offsetHeight - 8) + 'px' : '';
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { el.toast.hidden = true; }, 4000);
   }
